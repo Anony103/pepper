@@ -1,11 +1,6 @@
 import React from 'react';
 import HeroBanner3 from '../component/HeroBanner3';
 import Navbar from '../component/Navbar';
-import Overview from '../component/Overview';
-import home from '../assets/home.jpg'
-import hero from '../assets/hero.jpg'
-import frame from '../assets/Frame.png'
-import scroll from '../assets/scroll.svg'
 import Tuitions from '../component/Tuitions';
 
 const Tuition = () => {
@@ -18,9 +13,6 @@ const Tuition = () => {
   const bannerStyle = {
     backgroundImage: `url(${selectedBackgroundImageUrl})`,
     backgroundSize: useSmallScreen ? 'fit' : 'cover',
-    // backgroundSize:'cover'
-    // backgroundPosition: 'center',
-    // with:'100%'
   };
 
   return (

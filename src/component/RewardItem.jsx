@@ -1,5 +1,4 @@
 import React from 'react';
-// import point from '../assets/10point.jpg';
 import {point} from '../../data'
 import { NavLink } from 'react-router-dom';
 

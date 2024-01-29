@@ -1,7 +1,5 @@
-import { NavLink, useLocation } from "react-router-dom";
-import { Fragment, useState } from 'react'
+import { NavLink } from "react-router-dom";
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../assets/logo.png'
 
 const navigation = [

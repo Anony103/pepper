@@ -1,9 +1,4 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import styled from "styled-components";
-import Navbar from './component/Navbar';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Reward from './pages/Reward';
@@ -25,7 +20,6 @@ position: relative;
 `;
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>

@@ -4,7 +4,7 @@ import google from '../assets/google.svg';
 import facebook from '../assets/facebook.svg';
 import apple from '../assets/apple.svg';
 import { UserAuth } from '../../config/AuthContext';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 

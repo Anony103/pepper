@@ -1,4 +1,4 @@
-// Reward component
+
 import React, { useRef } from 'react';
 import HeroBanner2 from '../component/HeroBanner2';
 import Overview2 from '../component/Overview2';

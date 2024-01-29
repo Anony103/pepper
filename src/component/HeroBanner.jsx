@@ -1,5 +1,4 @@
 import React from 'react';
-import homes from '../assets/homes.png';
 import { NavLink } from 'react-router-dom';
 
 const HeroBanner = () => {

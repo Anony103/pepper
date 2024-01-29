@@ -1,5 +1,4 @@
 import React from 'react';
-import reward from '../assets/reward.jpeg';
 import {pepperReward} from '../../data'
 import { NavLink } from 'react-router-dom';
 

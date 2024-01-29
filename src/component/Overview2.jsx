@@ -1,5 +1,4 @@
 import React from 'react';
-import scan from '../assets/scan.jpg';
 import {how} from '../../data.jsx'
 import { NavLink } from 'react-router-dom';
 
