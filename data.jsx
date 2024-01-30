@@ -13,7 +13,7 @@ import point1 from './src/assets/10point.jpg'
 import point2 from './src/assets/15point.jpg'
 import point3 from './src/assets/30point.jpg'
 import regular from './src/assets/DPRegular.png'
-import regular1 from './src/assets/DPRegular1.png'
+// import regular1 from './src/assets/DPRegular1.png'
 import regular2 from './src/assets/DPRegular3.png'
 import regular3 from './src/assets/DPRegular4.png'
 import regular4 from './src/assets/DPRegular5.png'
@@ -477,7 +477,8 @@ export const product = [
     },
     {
         id:2,
-        img:regular1,
+        img:'',
+        // img:regular1,
         title:'DIET DR PEPPER',
         bg:'#ffffff',
         color:'black'
