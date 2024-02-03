@@ -159,13 +159,17 @@ const Create = () => {
       <div className="max-w-sm mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold mb-4 text-center">CONTINUE WITH SOCIAL</h1>
         <div className="flex flex-col gap-4 justify-center items-center">
-          <button onClick={handleFacebookSignIn} className="flex flex-row gap-6 border border-black py-2 px-4 rounded-3xl text-black cursor-pointer w-80">
+          <button
+          onClick={handleFacebookSignIn}
+          className="flex flex-row gap-6 border border-black py-2 px-4 rounded-3xl text-black cursor-pointer w-80">
             <img src={facebook} alt="" className='w-6 h-6'/>
             <p className='flex-start'>
             SIGN IN WITH FACEBOOK
             </p>
             </button>
-          <button onClick={handleGoogleSignIn} className="flex flex-row gap-6 border border-black py-2 px-4 rounded-3xl text-black cursor-pointer w-80">
+          <button
+          onClick={handleGoogleSignIn}
+          className="flex flex-row gap-6 border border-black py-2 px-4 rounded-3xl text-black cursor-pointer w-80">
           <img src={google} alt="" className='w-6 h-6'/>
             <p className='flex-start'>
             SIGN IN WITH GOOGLE
