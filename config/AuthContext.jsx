@@ -1,11 +1,12 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import {GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, FacebookAuthProvider} from 'firebase/auth'
-import {auth} from '../config/firebase'
-// import { collection, getDocs,  doc, addDoc, deleteDoc } from 'firebase/firestore';
+import {auth, firestore} from '../config/firebase'
+import { collection, getDocs,  doc, addDoc, deleteDoc } from 'firebase/firestore';
  const AuthContext = createContext()
 
  export const  AuthContextProvider = ({children}) => {
      const [user, setUser] = useState({});
+     const [products, setProducts] = useState([]);
 
      const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider();
@@ -64,6 +65,14 @@ const signInWithFacebook = async () => {
         }
       };
 
+      useEffect(() => {
+        const fetchEvent = async () => {
+          const EventSnapshot = await getDocs(collection(firestore, "production"));
+          setProducts(EventSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+          };
+          fetchEvent();
+      },[]);
+
 
       useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -75,7 +84,7 @@ const signInWithFacebook = async () => {
       }, []);
 
     return (
-        <AuthContext.Provider value={{signInWithGoogle, signInWithFacebook, logOut, createUserWithEmailPassword, authenticateUserWithEmailPassword, user }}>
+        <AuthContext.Provider value={{signInWithGoogle, signInWithFacebook, logOut, createUserWithEmailPassword, authenticateUserWithEmailPassword, user, products }}>
             {children}
         </AuthContext.Provider>
     )
