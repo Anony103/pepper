@@ -10,6 +10,7 @@ import Faq from './pages/Faq';
 import Create from './pages/Create';
 import Footer from './component/Footer';
 import { AuthContextProvider } from '../config/AuthContext';
+import Edit from "./pages/Edit";
 
 
 export const Container = styled.div`
@@ -21,6 +22,9 @@ position: relative;
 
 function App() {
 
+  const location = useLocation();
+  const excludedPaths = ['/form'];
+  const shouldDisplayNavbar = !excludedPaths.includes(location.pathname);
   return (
     <>
       <Container>
@@ -36,8 +40,10 @@ function App() {
             <Route path="/faq" element={<Faq />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="/create" element={<Create />} />
+            <Route path="/form" element={<Edit/>} />
            </Routes>
-          <Footer/>
+
+           {shouldDisplayNavbar &&<Footer/>}
         </AuthContextProvider>
 
       </Container>

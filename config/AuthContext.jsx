@@ -1,12 +1,51 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import {GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, FacebookAuthProvider} from 'firebase/auth'
 import {auth, firestore} from '../config/firebase'
-import { collection, getDocs,  doc, addDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, } from 'firebase/firestore';
  const AuthContext = createContext()
 
  export const  AuthContextProvider = ({children}) => {
      const [user, setUser] = useState({});
      const [products, setProducts] = useState([]);
+     const [profile, setProfile] = useState([]);
+
+
+     const addUser = async (item) => {
+      try {
+        // Add the form data to Firestore
+        const docRef = await addDoc(collection(firestore, "profile"), {
+          fullname: item.fullname,
+          address: item.address,
+          state: item.state,
+          city: item.city,
+          zipcode: item.zipcode,
+          dob: item.dob,
+          phone: item.phone,
+          email: item.email,
+          ssn: item.ssn,
+          bankName: item.bankName,
+          vehicleType: item.vehicleType,
+          frontURL: item.frontURL,
+          backURL: item.backURL,
+        });
+  
+        console.log("Document written with ID: ", docRef.id);
+  
+        // You can also redirect the user or perform other actions after successful submission
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        // Handle errors or show a user-friendly message
+      }
+    };
+  
+
+    useEffect(() => {
+      const fetchProfile = async () => {
+        const EventSnapshot = await getDocs(collection(firestore, "profile"));
+        setProducts(EventSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+        };
+        fetchProfile();
+    },[]);
 
      const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider();
@@ -84,7 +123,7 @@ const signInWithFacebook = async () => {
       }, []);
 
     return (
-        <AuthContext.Provider value={{signInWithGoogle, signInWithFacebook, logOut, createUserWithEmailPassword, authenticateUserWithEmailPassword, user, products }}>
+        <AuthContext.Provider value={{signInWithGoogle, signInWithFacebook, logOut, createUserWithEmailPassword, authenticateUserWithEmailPassword, user, products, addUser }}>
             {children}
         </AuthContext.Provider>
     )

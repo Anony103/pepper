@@ -10,8 +10,16 @@ import { useNavigate } from 'react-router-dom';
 
 const Create = () => {
   const [selectedOption, setSelectedOption] = useState('signup');
-
-  const {signInWithGoogle, signInWithFacebook, user} = UserAuth();
+  const [formValues, setFormValues] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [validationErrors, setValidationErrors] = useState({});
+  const [showRequiredMessage, setShowRequiredMessage] = useState(false);
+  const {signInWithGoogle, signInWithFacebook, createUserWithEmailPassword, user} = UserAuth();
   const navigate = useNavigate();
   const handleGoogleSignIn = async () => {
     try {
@@ -37,13 +45,111 @@ const Create = () => {
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
+    setValidationErrors({});
+    setShowRequiredMessage(false);
   };
+
+  const handleInputChange = (field, value) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
+  };
+
+  const handleSignUp = async () => {
+    // Validate the form
+    const errors = {};
+    let hasError = false;
+  
+    Object.keys(formValues).forEach((field) => {
+      if (formValues[field] === '') {
+        errors[field] = true;
+        hasError = true;
+      }
+    });
+  
+    // Check if password and confirm password match
+    if (formValues.password !== formValues.confirmPassword) {
+      errors.confirmPassword = true;
+      hasError = true;
+    }
+  
+    // Check if the checkbox is checked
+    if (!formValues.agreeTerms) {
+      errors.agreeTerms = true;
+      hasError = true;
+    }
+  
+    setValidationErrors(errors);
+  
+    if (hasError) {
+      setShowRequiredMessage(true);
+    } else {
+      try {
+        // Call the createUserWithEmailPassword function
+        await createUserWithEmailPassword(formValues.email, formValues.password);
+  
+        // Continue with signup logic (optional)
+  
+        // Reset form and validation state
+        setFormValues({
+          firstname: '',
+          lastname: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          agreeTerms: false,
+        });
+        setValidationErrors({});
+        setShowRequiredMessage(false);
+      } catch (error) {
+        console.error('Error creating user:', error);
+        // Handle error (e.g., display an error message)
+      }
+    }
+  };
+  
 
   const renderForm = () => {
     if (selectedOption === 'signup') {
       return (
         <div className="max-w-sm mx-auto">
-          <div className="mb-4">
+          {Object.keys(formValues).map((field) => (
+            <div key={field} className="mb-4">
+              <label htmlFor={field} className="block text-sm font-medium text-gray-700">
+                {field.toUpperCase()}
+              </label>
+              <input
+                type={field.includes('password') ? 'password' : 'text'}
+                name={field}
+                id={field}
+                value={formValues[field]}
+                onChange={(e) => handleInputChange(field, e.target.value)}
+                className={`mt-1 p-2 border h-16 w-full focus:outline-none focus:ring focus:border-blue-300 ${
+                  validationErrors[field] ? 'border-red-500' : ''
+                }`}
+              />
+              {validationErrors[field] && (
+                <p className="text-red-500 text-xs mt-1">This field is required</p>
+              )}
+            </div>
+          ))}
+          <div className="mb-4 flex flex-row items-start gap-2">
+            <div>
+            <input type="checkbox" name="check" id="check" className='w-5 h-5 bg-white text-tahiti'/>
+            </div>
+            <label htmlFor="check" className='text-sm'>By clicking the “Continue” button below, you confirm that you are 18 years or older, a U.S. legal resident, and that you agree to our <a href="" className='text-taha'> Terms of Service </a> and <a href="">Privacy Policy.</a> When you participate in the Pepper Perks program, we may offer you certain financial incentives. Please review our <a href="">financial incentives</a> notice.</label>
+          </div>
+          <div className="mb-4 flex flex-row justify-center">
+            <button
+              onClick={handleSignUp}
+              className="bg-tahiti font-bold text-white px-12 py-3 rounded-3xl hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+            >
+              Sign Up
+            </button>
+          </div>
+          
+          {/* <div className="mb-4">
             <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
               FIRST NAME
             </label>
@@ -51,7 +157,7 @@ const Create = () => {
               type="text"
               name="firstname"
               id="firstname"
-              className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300"
+              className="mt-1 p-2 border w-full h-16 focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
           <div className="mb-4">
@@ -62,7 +168,7 @@ const Create = () => {
               type="text"
               name="lastname"
               id="lastname"
-              className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300"
+              className="mt-1 p-2 border h-16 w-full focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
           <div className="mb-4">
@@ -73,7 +179,7 @@ const Create = () => {
               type="email"
               name="email"
               id="email"
-              className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300"
+              className="mt-1 p-2 border h-16 w-full focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
           <div className="mb-4">
@@ -84,7 +190,7 @@ const Create = () => {
               type="password"
               name="password"
               id="password"
-              className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300"
+              className="mt-1 p-2 border h-16 w-full focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
           <div className="mb-4">
@@ -95,7 +201,7 @@ const Create = () => {
               type="password"
               name="password"
               id="password"
-              className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300"
+              className="mt-1 p-2 border h-16 w-full focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
           <div className="mb-4 flex flex-row items-start gap-2">
@@ -108,7 +214,7 @@ const Create = () => {
           <button className="bg-tahiti font-bold text-white px-12 py-3 rounded-3xl hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
             Sign Up
           </button>
-          </div>
+          </div> */}
         </div>
       );
     } else {
