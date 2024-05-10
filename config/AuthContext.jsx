@@ -70,25 +70,24 @@ const signInWithFacebook = async () => {
     }
 
 
-    const createUserWithEmailPassword = async (email, password, name, phoneNumber, profilePic) => {
-        try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const newUser = userCredential.user;
-      
-          // Update user profile information (name, phone number, profile picture)
-          await updateProfile(newUser, {
-            displayName: name,
-            phoneNumber: phoneNumber,
-            photoURL: profilePic,
-          });
-      
-          setUser(newUser);
-          console.log('User created:', newUser);
-        } catch (error) {
-          console.error('Error creating user:', error.message);
-          throw error;
-        }
+    const createUserWithEmailPassword = async (email, password, firstname, lastname) => {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const newUser = userCredential.user;
+    
+        // Update user profile information (first name, last name)
+        await updateProfile(newUser, {
+          displayName: `${firstname} ${lastname}`,
+        });
+    
+        setUser(newUser);
+        console.log('User created:', newUser);
+      } catch (error) {
+        console.error('Error creating user:', error.message);
+        throw error;
       }
+    }
+    
 
       const authenticateUserWithEmailPassword = async (email, password) => {
         try {

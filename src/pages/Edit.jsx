@@ -8,16 +8,18 @@ import PhoneInput from 'react-phone-number-input';
 // import 'filepond/dist/filepond.min.css';
 import logo from '../assets/logo.png'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { NavLink } from 'react-router-dom';
 
 const Edit = () => {
     const [value, setValue] = useState();
   const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const {addUser} = UserAuth();
     const storage = getStorage();
 
-
+    const toggleSuccess = () => {
+      setSubmitSuccess((prevState) => !prevState);
+    };
 
     // Define the validation schema
     const validationSchema = yup.object().shape({
@@ -68,11 +70,10 @@ const Edit = () => {
 
           await addUser({ ...values, frontURL, backURL });
           setMessage('Account created successfully!');
-          setSubmitted(true);
+          setSubmitSuccess(true)
           resetForm();
         } catch (error) {
             setMessage(`Error: ${error.message}`);
-            setSubmitted(true);
         }
       },
       
@@ -138,11 +139,6 @@ const Edit = () => {
         </div>
         </div>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
-        {submitted && (
-          <div className="alert alert-primary" role="alert">
-            {message}
-          </div>
-        )}
     <form onSubmit={formik.handleSubmit} className="max-w-sm mx-auto">
       <div className="mb-4">
         <label htmlFor="fullname" className="block text-sm font-medium text-gray-700">
@@ -409,9 +405,23 @@ const Edit = () => {
       </div>
 
       {submitSuccess && (
-        <div className='text-green-500 text-center'>
-          Form submitted successfully! You can now display a success message or redirect the user.
+        <div className="fixed inset-0 overflow-hidden z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.99)' }}>
+        <div className="w-full lg:max-w-6xl bg-white text-black shadow-xl transition-transform duration-300 transform translate-x-0 py-6">
+          <div className="flex items-center justify-between text-center px-6">
+            <div></div>
+            <NavLink to="/">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+            </NavLink>
+          </div>
+          <div className="flex flex-col items-center justify-between text-center py-4 px-6 gap-4">
+            <p className='text-[#808080] font-semibold text-lg'>You are now leaving DrPepper.com and heading to DrPepperStore.com.</p>
+            <h2 className='font-extrabold text-4xl text-tahiti'>APPLICATION SUCCESSFUL</h2>
+            <p className='text-[#808080] font-semibold'>Operated by HALO</p>
+          </div>
         </div>
+      </div>
       )}
     </form>
     </div>
